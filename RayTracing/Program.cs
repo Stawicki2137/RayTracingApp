@@ -9,14 +9,17 @@ internal class Program
         int imageWidth = 256;
         int imageHeight = 256;
 
-        Console.Write($"P3\n{imageWidth} {imageHeight}\n255\n");
-        for(int j = 0; j<imageHeight; j++)
+        Color[] image = new Color[imageWidth * imageHeight];
+        for (int j = 0; j < imageHeight; j++)
         {
-            for(int i = 0; i<imageHeight; i++)
+            for (int i = 0; i < imageWidth; i++)
             {
-                var pixelColor = new Color((double)i/(double)(imageWidth-1), (double)j/(double)(imageHeight-1),0.2);
-                ColorUtils.WriteColor(pixelColor);
+                var pixelColor = new Color((double)i / (double)(imageWidth - 1), (double)j / (double)(imageHeight - 1), 0.2);
+                image[j * imageWidth + i] = pixelColor;
             }
         }
+        JpegColor[] imageJpeg = ColorUtils.WriteColor(image, imageWidth, imageHeight);
+        ColorUtils.SaveAsJpeg(imageJpeg, imageWidth, imageHeight);
+
     }
 }
