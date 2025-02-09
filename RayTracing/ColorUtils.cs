@@ -54,7 +54,7 @@ public static class ColorUtils
         string imageName = $"../../../ImagesJpeg/Image1.jpeg";
         ImSh.Formats.Jpeg.JpegEncoder encoder = new();
         using FileStream fileStream = new FileStream(imageName, FileMode.OpenOrCreate, FileAccess.Write);
-        encoder.Encode(image,fileStream);
+        encoder.Encode(image, fileStream);
         image.Dispose();
     }
 

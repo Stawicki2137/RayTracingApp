@@ -11,7 +11,7 @@ public struct Vec3
 {
     public double[] e = new double[3];
     public Vec3() { }
-    public Vec3(double e0, double e1, double e2)  { e[0] = e0; e[1] = e1; e[2] = e2; }
+    public Vec3(double e0, double e1, double e2) { e[0] = e0; e[1] = e1; e[2] = e2; }
     public double x => e[0];
     public double y => e[1];
     public double z => e[2];
