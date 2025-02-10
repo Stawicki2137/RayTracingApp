@@ -33,7 +33,7 @@ public class Camera
                     Ray ray = GetRay(i, j);
                     pixelColor += RayColor(ray, world);
                 }
-                image[j * ImageWidth + i] = pixelColor*_pixelSamplesScale;
+                image[j * ImageWidth + i] = pixelColor * _pixelSamplesScale;
             }
         }
         JpegColor[] imageJpeg = ColorUtils.WriteColor(image, ImageWidth, _imageHeight);
@@ -77,7 +77,8 @@ public class Camera
         HitRecord record = new HitRecord();
         if (world.Hit(ref ray, new Interval(0), ref record))
         {
-            return 0.5 * (record.Normal + new Color(1, 1, 1));
+            Vec3 direction = Vec3.RandomOnHemisphere(record.Normal);
+            return 0.5 * RayColor(new Ray(record.P, direction), world);
         }
         Vec3 unitDirection = Vec3.UnitVector(ray.Direction);
         var a = 0.5 * (unitDirection.y + 1.0);

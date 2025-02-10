@@ -96,6 +96,32 @@ public struct Vec3
     {
         return v / v.Length();
     }
+    public static Vec3 Random()
+    {
+        return new Vec3(Rtfunc.RandomDouble(), Rtfunc.RandomDouble(), Rtfunc.RandomDouble());
+    }
+    public static Vec3 Random(double min, double max)
+    {
+        return new Vec3(Rtfunc.RandomDouble(min, max), Rtfunc.RandomDouble(min, max), Rtfunc.RandomDouble(min, max));
+    }
+    public static Vec3 RandomUnitVector()
+    {
+        while (true)
+        {
+            var p = Vec3.Random(-1, 1);
+            var lensq = p.LengthSquared();
+            if (1e-160 < lensq && lensq <= 1)
+                return p / Math.Sqrt(lensq);
+        }
+    }
+    public static Vec3 RandomOnHemisphere(Vec3 normal)
+    {
+        Vec3 onUnitSphere = Vec3.RandomUnitVector();
+        if (Vec3.Dot(onUnitSphere, normal) > 0.0)
+            return onUnitSphere;
+        else
+            return -onUnitSphere;
+    }
     public override string ToString()
     {
         return $"{e[0]} {e[1]} {e[2]}";

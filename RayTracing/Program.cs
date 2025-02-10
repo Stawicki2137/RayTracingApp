@@ -21,7 +21,7 @@ internal class Program
 
         camera.AspectRatio = 16.0 / 9.0;
         camera.ImageWidth = 400;
-        camera.SamplesPerPixel = 5;
+        camera.SamplesPerPixel = 100;
         camera.Render(world);
 
     }
