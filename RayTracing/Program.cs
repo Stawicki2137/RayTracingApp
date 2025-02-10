@@ -13,7 +13,7 @@ internal class Program
     public static Color RayColor(Ray ray,Hittable world)
     {
         HitRecord record = new HitRecord();
-        if(world.Hit(ref ray,0,double.MaxValue,ref record))
+        if(world.Hit(ref ray,new Interval(0),ref record))
         {
             return 0.5 * (record.Normal + new Color(1, 1, 1));
         }

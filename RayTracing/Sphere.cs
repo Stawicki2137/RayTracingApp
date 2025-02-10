@@ -15,7 +15,7 @@ public class Sphere : Hittable
         _center = center;
         _radius = Math.Max(radius, 0);
     }
-    public override bool Hit(ref Ray ray, double rayTmin, double rayTmax, ref HitRecord hitRecord)
+    public override bool Hit(ref Ray ray, Interval rayT, ref HitRecord hitRecord)
     {
         Vec3 originCenter = _center - ray.Origin;
         var a = ray.Direction.LengthSquared();
@@ -23,20 +23,20 @@ public class Sphere : Hittable
         var c = originCenter.LengthSquared() - _radius * _radius;
 
         var discriminant = h * h - a * c;
-        if(discriminant<0) return false;
+        if (discriminant < 0) return false;
 
         var sqrtd = Math.Sqrt(discriminant);
         var root = (h - sqrtd) / a;
-        if(root<=rayTmin||rayTmax<=root)
+        if (!rayT.Surrounds(root))
         {
-            root = (h+sqrtd) / a;
-            if(root<=rayTmin||rayTmax<=root ) 
+            root = (h + sqrtd) / a;
+            if (!rayT.Surrounds(root))
                 return false;
         }
         hitRecord.T = root;
         hitRecord.P = ray.At(hitRecord.T);
-        Vec3 outwardNormal = (hitRecord.P - _center)/_radius;
-        hitRecord.SetFaceNormal(ray,outwardNormal);
+        Vec3 outwardNormal = (hitRecord.P - _center) / _radius;
+        hitRecord.SetFaceNormal(ray, outwardNormal);
         return true;
     }
 }

@@ -15,12 +15,12 @@ public class HitRecord
 
     public void SetFaceNormal(Ray ray, Vec3 outwardNormal)
     {
-        FrontFace = Vec3.Dot(ray.Direction, outwardNormal)<0;
-        Normal = FrontFace?outwardNormal:-outwardNormal;
+        FrontFace = Vec3.Dot(ray.Direction, outwardNormal) < 0;
+        Normal = FrontFace ? outwardNormal : -outwardNormal;
     }
 
 }
 public abstract class Hittable
 {
-    public abstract bool Hit(ref Ray ray, double rayTmin, double rayTmax, ref HitRecord hitRecord);
+    public abstract bool Hit(ref Ray ray, Interval rayT, ref HitRecord hitRecord);
 }

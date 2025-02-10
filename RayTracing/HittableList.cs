@@ -15,14 +15,14 @@ public class HittableList : Hittable
     public void Clear() { Objects.Clear(); }
     public void Add(Hittable obj) { Objects.Add(obj); }
 
-    public override bool Hit(ref Ray ray, double rayTmin, double rayTmax, ref HitRecord hitRecord)
+    public override bool Hit(ref Ray ray, Interval rayT, ref HitRecord hitRecord)
     {
         bool hitAnything = false;
-        var closestSoFar = rayTmax;
+        var closestSoFar = rayT.Max;
 
         foreach (var obj in Objects)
         {
-            if (obj.Hit(ref ray, rayTmin, closestSoFar, ref hitRecord))
+            if (obj.Hit(ref ray, new Interval(rayT.Min, closestSoFar), ref hitRecord))
             {
                 hitAnything = true;
                 closestSoFar = hitRecord.T;
