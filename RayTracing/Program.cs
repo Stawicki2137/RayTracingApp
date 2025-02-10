@@ -19,8 +19,9 @@ internal class Program
         world.Add(new Sphere(new Point3(0, -100.5, -1), 100));
         Camera camera = new Camera();
 
-        camera.aspectRatio = 16.0 / 9.0;
-        camera.imageWidth = 400;
+        camera.AspectRatio = 16.0 / 9.0;
+        camera.ImageWidth = 400;
+        camera.SamplesPerPixel = 5;
         camera.Render(world);
 
     }

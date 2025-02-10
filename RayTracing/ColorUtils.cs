@@ -18,6 +18,7 @@ public struct JpegColor
 }
 public static class ColorUtils
 {
+    private static readonly Interval intensity = new Interval(0.000, 0.999);
     public static JpegColor[] WriteColor(Color[] unconvertedImage, int width, int height)
     {
         JpegColor[] convertedImage = new JpegColor[width * height];
@@ -29,9 +30,9 @@ public static class ColorUtils
                 var G = unconvertedImage[i * width + j].y;
                 var B = unconvertedImage[i * width + j].z;
 
-                convertedImage[i * width + j].R = (byte)(255.999 * R);
-                convertedImage[i * width + j].G = (byte)(255.999 * G);
-                convertedImage[i * width + j].B = (byte)(255.999 * B);
+                convertedImage[i * width + j].R = (byte)(255.999 * intensity.Clamp(R));
+                convertedImage[i * width + j].G = (byte)(255.999 * intensity.Clamp(G));
+                convertedImage[i * width + j].B = (byte)(255.999 * intensity.Clamp(B));
 
             }
         }
@@ -51,7 +52,7 @@ public static class ColorUtils
                 span[i * width + j].B = (byte)ppmImage[i * width + j].B;
             }
         }
-        string imageName = $"../../../ImagesJpeg/Image1.jpeg";
+        string imageName = $"../../../ImagesJpeg/ImageBeforeAntialiasing.jpeg";
         ImSh.Formats.Jpeg.JpegEncoder encoder = new();
         using FileStream fileStream = new FileStream(imageName, FileMode.OpenOrCreate, FileAccess.Write);
         encoder.Encode(image, fileStream);
