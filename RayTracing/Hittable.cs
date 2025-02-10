@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace RayTracing;
+using Point3 = RayTracing.Vec3;
+public class HitRecord
+{
+    public Point3 P;
+    public Vec3 Normal = new Vec3();
+    public double T;
+
+}
+public abstract class Hittable
+{
+    public abstract bool Hit(ref Ray ray, double rayTmin, double rayTmax, ref HitRecord hitRecord);
+}
