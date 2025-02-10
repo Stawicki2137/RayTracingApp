@@ -11,6 +11,13 @@ public class HitRecord
     public Point3 P;
     public Vec3 Normal = new Vec3();
     public double T;
+    public bool FrontFace;
+
+    public void SetFaceNormal(Ray ray, Vec3 outwardNormal)
+    {
+        FrontFace = Vec3.Dot(ray.Direction, outwardNormal)<0;
+        Normal = FrontFace?outwardNormal:-outwardNormal;
+    }
 
 }
 public abstract class Hittable

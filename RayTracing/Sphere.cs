@@ -35,7 +35,8 @@ public class Sphere : Hittable
         }
         hitRecord.T = root;
         hitRecord.P = ray.At(hitRecord.T);
-        hitRecord.Normal = (hitRecord.P - _center)/_radius;
+        Vec3 outwardNormal = (hitRecord.P - _center)/_radius;
+        hitRecord.SetFaceNormal(ray,outwardNormal);
         return true;
     }
 }
