@@ -9,30 +9,13 @@ namespace RayTracing;
 
 internal class Program
 {
-    public static double HitSphere(Point3 center, double radius, Ray ray)
+   
+    public static Color RayColor(Ray ray,Hittable world)
     {
-        Vec3 originCenter = center - ray.Origin;
-        var a = ray.Direction.LengthSquared();
-        var h = Vec3.Dot(ray.Direction, originCenter);
-        var c = originCenter.LengthSquared() - radius * radius;
-        var discriminant = h * h - a * c;
-        if (discriminant < 0)
+        HitRecord record = new HitRecord();
+        if(world.Hit(ref ray,0,double.MaxValue,ref record))
         {
-            return -1.0;
-        }
-        else
-        {
-            return (double)(h - Math.Sqrt(discriminant)) / (double)a;
-        }
-    }
-    public static Color RayColor(Ray ray)
-    {
-        var sphereCenter = new Point3(0, 0, -1);
-        var t = HitSphere(sphereCenter, 0.5, ray);
-        if (t > 0.0)
-        {
-            Vec3 N = Vec3.UnitVector(ray.At(t) - sphereCenter);
-            return 0.5 * new Color(N.x + 1, N.y + 1, N.z + 1);
+            return 0.5 * (record.Normal + new Color(1, 1, 1));
         }
         Vec3 unitDirection = Vec3.UnitVector(ray.Direction);
         var a = 0.5 * (unitDirection.y + 1.0);
@@ -45,6 +28,11 @@ internal class Program
 
         int imageHeight = (int)((double)imageWidth / aspectRatio);
         imageHeight = (imageHeight < 1) ? 1 : imageHeight;
+
+        //World 
+        HittableList world = new HittableList();
+        world.Add(new Sphere(new Point3(0, 0, -1), 0.5));
+        world.Add(new Sphere(new Point3(0, -100.5, -1), 100));
 
         //Camera
         var focalLength = 1.0;
@@ -69,7 +57,7 @@ internal class Program
                 var pixelCenter = pixel00_location + (i * pixelDeltaU) + (j * pixelDeltaV);
                 var rayDirection = pixelCenter - cameraCenter;
                 Ray ray = new Ray(cameraCenter, rayDirection);
-                Color pixelColor = RayColor(ray);
+                Color pixelColor = RayColor(ray,world);
                 image[j * imageWidth + i] = pixelColor;
             }
         }
