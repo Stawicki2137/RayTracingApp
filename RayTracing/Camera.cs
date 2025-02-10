@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,6 +13,7 @@ public class Camera
     public double AspectRatio = 1.0;
     public int ImageWidth = 100;
     public int SamplesPerPixel = 10;
+    public int MaxDepth = 10; // Maximum number of ray bounces into scene
 
     private int _imageHeight;
     private Point3 _cameraCenter;
@@ -31,7 +33,7 @@ public class Camera
                 for (int sample = 0; sample < SamplesPerPixel; sample++)
                 {
                     Ray ray = GetRay(i, j);
-                    pixelColor += RayColor(ray, world);
+                    pixelColor += RayColor(ray, MaxDepth, world);
                 }
                 image[j * ImageWidth + i] = pixelColor * _pixelSamplesScale;
             }
@@ -72,13 +74,16 @@ public class Camera
     {
         return new Vec3(Rtfunc.RandomDouble() - 0.5, Rtfunc.RandomDouble() - 0.5, 0);
     }
-    private Color RayColor(Ray ray, Hittable world)
+    private Color RayColor(Ray ray, int depth, Hittable world)
     {
+        if (depth <= 0)
+            return new Color(0, 0, 0);
+
         HitRecord record = new HitRecord();
         if (world.Hit(ref ray, new Interval(0), ref record))
         {
             Vec3 direction = Vec3.RandomOnHemisphere(record.Normal);
-            return 0.5 * RayColor(new Ray(record.P, direction), world);
+            return 0.5 * RayColor(new Ray(record.P, direction), depth - 1, world);
         }
         Vec3 unitDirection = Vec3.UnitVector(ray.Direction);
         var a = 0.5 * (unitDirection.y + 1.0);
