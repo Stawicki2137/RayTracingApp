@@ -20,9 +20,9 @@ internal class Program
         Camera camera = new Camera();
 
         camera.AspectRatio = 16.0 / 9.0;
-        camera.ImageWidth = 1200;
-        camera.SamplesPerPixel = 50;
-        camera.MaxDepth = 30;
+        camera.ImageWidth = 400;
+        camera.SamplesPerPixel = 100;
+        camera.MaxDepth = 50;
         camera.Render(world);
 
     }
