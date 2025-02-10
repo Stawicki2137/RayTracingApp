@@ -18,6 +18,7 @@ public struct JpegColor
 }
 public static class ColorUtils
 {
+
     private static readonly Interval intensity = new Interval(0.000, 0.999);
     public static JpegColor[] WriteColor(Color[] unconvertedImage, int width, int height)
     {
@@ -30,6 +31,10 @@ public static class ColorUtils
                 var G = unconvertedImage[i * width + j].y;
                 var B = unconvertedImage[i * width + j].z;
 
+                R = LinearToGamma(R);
+                G = LinearToGamma(G);
+                B = LinearToGamma(B);
+
                 convertedImage[i * width + j].R = (byte)(255.999 * intensity.Clamp(R));
                 convertedImage[i * width + j].G = (byte)(255.999 * intensity.Clamp(G));
                 convertedImage[i * width + j].B = (byte)(255.999 * intensity.Clamp(B));
@@ -37,6 +42,13 @@ public static class ColorUtils
             }
         }
         return convertedImage;
+    }
+    private static double LinearToGamma(double linearComponent)
+    {
+        if (linearComponent > 0)
+            return Math.Sqrt(linearComponent);
+
+        return 0;
     }
     public static void SaveAsJpeg(JpegColor[] ppmImage, int width, int height)
     {
@@ -52,7 +64,7 @@ public static class ColorUtils
                 span[i * width + j].B = (byte)ppmImage[i * width + j].B;
             }
         }
-        string imageName = $"../../../ImagesJpeg/Image1.jpeg";
+        string imageName = $"../../../ImagesJpeg/Image6.jpeg";
         ImSh.Formats.Jpeg.JpegEncoder encoder = new();
         using FileStream fileStream = new FileStream(imageName, FileMode.OpenOrCreate, FileAccess.Write);
         encoder.Encode(image, fileStream);
