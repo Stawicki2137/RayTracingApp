@@ -9,19 +9,31 @@ namespace RayTracing;
 
 internal class Program
 {
-    public static bool HitSphere(Point3 center, double radius, Ray ray)
+    public static double HitSphere(Point3 center, double radius, Ray ray)
     {
         Vec3 originCenter = center - ray.Origin;
-        var a = Vec3.Dot(ray.Direction,ray.Direction);
-        var b = -2.0 * Vec3.Dot(ray.Direction,originCenter);
-        var c = Vec3.Dot(originCenter,originCenter) - radius*radius;
+        var a = Vec3.Dot(ray.Direction, ray.Direction);
+        var b = -2.0 * Vec3.Dot(ray.Direction, originCenter);
+        var c = Vec3.Dot(originCenter, originCenter) - radius * radius;
         var discriminant = b * b - 4 * a * c;
-        return discriminant >= 0;
+        if (discriminant < 0)
+        {
+            return -1;
+        }
+        else
+        {
+            return (double)(-b - Math.Sqrt(discriminant)) / (double)(2.0 * a);
+        }
     }
     public static Color RayColor(Ray ray)
     {
-        if (HitSphere(new Point3(0, 0, -1), 0.7, ray))
-            return new Color(1.0, 0, 0.5);
+        var sphereCenter = new Point3(0, 0, -1);
+        var t = HitSphere(sphereCenter, 0.5, ray);
+        if (t > 0.0)
+        {
+            Vec3 N = Vec3.UnitVector(ray.At(t) - sphereCenter);
+            return 0.5 * new Color(N.x + 1, N.y + 1, N.z + 1);
+        }
         Vec3 unitDirection = Vec3.UnitVector(ray.Direction);
         var a = 0.5 * (unitDirection.y + 1.0);
         return (1.0 - a) * new Color(1.0, 1.0, 1.0) + a * new Color(0.5, 0.7, 1.0);
@@ -63,6 +75,5 @@ internal class Program
         }
         JpegColor[] imageJpeg = ColorUtils.WriteColor(image, imageWidth, imageHeight);
         ColorUtils.SaveAsJpeg(imageJpeg, imageWidth, imageHeight);
-
     }
 }
