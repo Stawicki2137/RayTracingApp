@@ -33,7 +33,7 @@ public class Camera
     {
         Initialize();
         Color[] image = new Color[ImageWidth * _imageHeight];
-        for (int j = 0; j < _imageHeight; j++)
+        Parallel.For(0, _imageHeight, j =>
         {
             for (int i = 0; i < ImageWidth; i++)
             {
@@ -45,7 +45,7 @@ public class Camera
                 }
                 image[j * ImageWidth + i] = pixelColor * _pixelSamplesScale;
             }
-        }
+        });
         JpegColor[] imageJpeg = ColorUtils.WriteColor(image, ImageWidth, _imageHeight);
         ColorUtils.SaveAsJpeg(imageJpeg, ImageWidth, _imageHeight);
 

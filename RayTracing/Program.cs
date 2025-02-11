@@ -57,11 +57,11 @@ internal class Program
         world.Add(new Sphere(new Point3(-4, 1, 0), 1.0, material2));
         var material3 = new Metal(new Color(0.7, 0.6, 0.5), 0.0);
         world.Add(new Sphere(new Point3(4, 1, 0), 1.0, material3));
-        ColorUtils.SetImageName = "FinalScene3";
+        ColorUtils.SetImageName = "FinalScene4";
 
         Camera camera = new Camera();
         camera.AspectRatio = 16.0 / 9.0;
-        camera.ImageWidth = 1000;
+        camera.ImageWidth = 1200;
         camera.SamplesPerPixel = 20;
         camera.MaxDepth = 30;
 
@@ -84,4 +84,11 @@ internal class Program
  FinalScene 170,4 s, 600 width 
  FinalScene2 311,819 s, 800 width 
  FinalScene3 878,04 s, 1000 width 
+
+ Parallel.For for rendering optimization
+ FinalScene4 1519.163 s, 1200 width
+ FinalScene3 401.666 s, 1000 width
+ FinalScene2 231,752 s, 800 width
+ ----------- 130,443 s, 600 width
+
  */
