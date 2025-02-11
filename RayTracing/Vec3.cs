@@ -133,7 +133,15 @@ public struct Vec3
         Vec3 rayOutParallel = -Math.Sqrt(Math.Abs(1.0 - rayOutPerpendicular.LengthSquared())) * normal;
         return rayOutPerpendicular + rayOutParallel;
     }
-
+    public static Vec3 RandomPointInsideUnitDisk()
+    {
+        while (true)
+        {
+            var p = new Vec3(Rtfunc.RandomDouble(-1, 1), Rtfunc.RandomDouble(-1, 1), 0);
+            if (p.LengthSquared() < 1)
+                return p;
+        }
+    }
 
     public override string ToString()
     {

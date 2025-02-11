@@ -28,7 +28,7 @@ internal class Program
         world.Add(new Sphere(new Point3(-1.0, 0.0, -1.0), 0.4, materialBubble));
         world.Add(new Sphere(new Point3(1.0, 0.0, -1.0), 0.5, materialRight));
 
-        ColorUtils.SetImageName = "ZoomingIn";
+        ColorUtils.SetImageName = "SpheresWithDepthOfField";
 
         Camera camera = new Camera();
         camera.AspectRatio = 16.0 / 9.0;
@@ -40,6 +40,8 @@ internal class Program
         camera.LookFrom = new Point3(-2, 2, 1);
         camera.LookAt = new Point3(0, 0, -1);
         camera.Vup = new Vec3(0, 1, 0);
+        camera.DefocusAngle = 10.0;
+        camera.FocusDistance = 3.4;
         camera.Render(world);
 
     }
