@@ -28,7 +28,7 @@ internal class Program
         world.Add(new Sphere(new Point3(-1.0, 0.0, -1.0), 0.4, materialBubble));
         world.Add(new Sphere(new Point3(1.0, 0.0, -1.0), 0.5, materialRight));
 
-        ColorUtils.SetImageName = "DistantView";
+        ColorUtils.SetImageName = "ZoomingIn";
 
         Camera camera = new Camera();
         camera.AspectRatio = 16.0 / 9.0;
@@ -36,7 +36,7 @@ internal class Program
         camera.SamplesPerPixel = 100;
         camera.MaxDepth = 50;
 
-        camera.VFov = 90;
+        camera.VFov = 20;
         camera.LookFrom = new Point3(-2, 2, 1);
         camera.LookAt = new Point3(0, 0, -1);
         camera.Vup = new Vec3(0, 1, 0);
