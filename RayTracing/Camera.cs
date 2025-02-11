@@ -82,8 +82,12 @@ public class Camera
         HitRecord record = new HitRecord();
         if (world.Hit(ref ray, new Interval(0.001), ref record))
         {
-            Vec3 direction = record.Normal + Vec3.RandomUnitVector();
-            return 0.5 * RayColor(new Ray(record.P, direction), depth - 1, world);
+            var scattered = new Ray();
+            var attenuation = new Color();
+            if(record.Material.Scatter(ray,record,ref attenuation, ref scattered))
+                return attenuation * RayColor(scattered,depth-1, world);
+            return new Color(0,0,0);
+           
         }
         Vec3 unitDirection = Vec3.UnitVector(ray.Direction);
         var a = 0.5 * (unitDirection.y + 1.0);

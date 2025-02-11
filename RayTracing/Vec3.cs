@@ -122,6 +122,11 @@ public struct Vec3
         else
             return -onUnitSphere;
     }
+    public static Vec3 Reflect(Vec3 v, Vec3 n)
+    {
+        return v - 2 * Vec3.Dot(v, n) * n;
+    }
+
     public override string ToString()
     {
         return $"{e[0]} {e[1]} {e[2]}";
