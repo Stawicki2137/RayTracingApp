@@ -126,6 +126,14 @@ public struct Vec3
     {
         return v - 2 * Vec3.Dot(v, n) * n;
     }
+    public static Vec3 Refract(Vec3 rayDirUnitVec, Vec3 normal, double etaiOverEtat)
+    {
+        double cosTheta = Math.Min(Vec3.Dot(-rayDirUnitVec, normal), 1.0);
+        Vec3 rayOutPerpendicular = etaiOverEtat * (rayDirUnitVec + cosTheta * normal);
+        Vec3 rayOutParallel = -Math.Sqrt(Math.Abs(1.0 - rayOutPerpendicular.LengthSquared())) * normal;
+        return rayOutPerpendicular + rayOutParallel;
+    }
+
 
     public override string ToString()
     {

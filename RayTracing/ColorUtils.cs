@@ -64,7 +64,7 @@ public static class ColorUtils
                 span[i * width + j].B = (byte)ppmImage[i * width + j].B;
             }
         }
-        string imageName = $"../../../ImagesJpeg/FuzzedMetal.jpeg";
+        string imageName = $"../../../ImagesJpeg/GlassSphereThatAlwaysRefracts.jpeg";
         ImSh.Formats.Jpeg.JpegEncoder encoder = new();
         using FileStream fileStream = new FileStream(imageName, FileMode.OpenOrCreate, FileAccess.Write);
         encoder.Encode(image, fileStream);

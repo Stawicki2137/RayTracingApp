@@ -19,6 +19,27 @@ public class Material : IMaterial
         return true;
     }
 }
+public class Dialectric : Material
+{
+    private double _refractionIndex; // air - material 
+
+    public Dialectric(double refractionIndex)
+    {
+        _refractionIndex = refractionIndex;
+    }
+    public override bool Scatter(Ray rayIn, HitRecord record, ref Color attenuation, ref Ray scattered)
+    {
+        attenuation = new Color(1.0, 1.0, 1.0);
+        double refractionIndex = record.FrontFace ? ((double)1.0 / _refractionIndex) : _refractionIndex;
+
+        Vec3 unitDirection = Vec3.UnitVector(rayIn.Direction);
+        Vec3 refractedRay = Vec3.Refract(unitDirection, record.Normal, refractionIndex);
+
+        scattered = new Ray(record.P,refractedRay);
+        return true;
+    }
+
+}
 public class Metal : Material
 {
     private Color _albedo;
