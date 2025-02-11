@@ -22,16 +22,19 @@ public class Material : IMaterial
 public class Metal : Material
 {
     private Color _albedo;
-    public Metal(Color albedo)
+    private double _fuzziness;
+    public Metal(Color albedo, double fuzziness)
     {
         _albedo = albedo;
+        _fuzziness = fuzziness < 1 ? fuzziness : 1;
     }
     public override bool Scatter(Ray rayIn, HitRecord record, ref Color attenuation, ref Ray scattered)
     {
         Vec3 reflected = Vec3.Reflect(rayIn.Direction, record.Normal);
+        reflected = Vec3.UnitVector(reflected) + (_fuzziness * Vec3.RandomUnitVector());
         scattered = new Ray(record.P, reflected);
         attenuation = _albedo;
-        return true;
+        return (Vec3.Dot(scattered.Direction, record.Normal) > 0);
     }
 }
 
