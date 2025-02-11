@@ -15,7 +15,7 @@ public struct Interval
         Min = Double.NegativeInfinity;
         Max = Double.PositiveInfinity;
     }
-    public Interval(double min, double max=Double.PositiveInfinity)
+    public Interval(double min, double max = Double.PositiveInfinity)
     {
         Min = min;
         Max = max;
