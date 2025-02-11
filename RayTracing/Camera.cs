@@ -14,13 +14,17 @@ public class Camera
     public int ImageWidth = 100;
     public int SamplesPerPixel = 10;
     public int MaxDepth = 10; // Maximum number of ray bounces into scene
-    public double VFov = 90;
+    public double VFov = 90; // Vdrtical view angle
+    public Point3 LookFrom = new Point3(0, 0, 0);
+    public Point3 LookAt = new Point3(0, 0, -1);
+    public Vec3 Vup = new Vec3(0, 1, 0); // Camera-relative UP direction
 
     private int _imageHeight;
     private Point3 _cameraCenter;
     private Point3 _pixel00Location;
     private Vec3 _pixelDeltaU;
     private Vec3 _pixelDeltaV;
+    private Vec3 _u, _v, _w; // Camera frame basis vectors
     private double _pixelSamplesScale;
     public void Render(Hittable world)
     {
@@ -48,19 +52,23 @@ public class Camera
         _imageHeight = (int)(ImageWidth / AspectRatio);
         _imageHeight = (_imageHeight < 1) ? 1 : _imageHeight;
         _pixelSamplesScale = (double)1.0 / (double)SamplesPerPixel;
-        _cameraCenter = new Point3(0, 0, 0);
-        var focalLength = 1.0;
+        _cameraCenter = LookFrom;
+        var focalLength = (LookFrom - LookAt).Length();
         var theta = Rtfunc.DegreesToRadians(VFov);
         var h = Math.Tan(theta / 2);
         var viewportHeight = 2.0 * h * focalLength;
         var viewportWidth = viewportHeight * (double)(ImageWidth) / (double)_imageHeight;
 
-        var viewportU = new Vec3(viewportWidth, 0, 0); //Horizontal
-        var viewportV = new Vec3(0, -viewportHeight, 0); //Vertical
+        _w = Vec3.UnitVector(LookFrom - LookAt);
+        _u = Vec3.UnitVector(Vec3.Cross(Vup, _w));
+        _v = Vec3.Cross(_w, _u);
+
+        var viewportU = viewportWidth * _u; //Horizontal
+        var viewportV = viewportHeight * (-_v); //Vertical
 
         _pixelDeltaU = viewportU / ImageWidth;
         _pixelDeltaV = viewportV / _imageHeight;
-        var viewportUpperLeft = _cameraCenter - new Vec3(0, 0, focalLength) - viewportU / 2 - viewportV / 2;
+        var viewportUpperLeft = _cameraCenter - (focalLength * _w) - viewportU / 2 - viewportV / 2;
         _pixel00Location = viewportUpperLeft + 0.5 * (_pixelDeltaU + _pixelDeltaV);
     }
     private Ray GetRay(int i, int j)
