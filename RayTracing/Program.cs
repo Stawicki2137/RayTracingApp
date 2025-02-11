@@ -15,8 +15,8 @@ internal class Program
     {
 
         HittableList world = new HittableList();
-        world.Add(new Sphere(new Point3(0, 0, -1), 0.5));
-        world.Add(new Sphere(new Point3(0, -100.5, -1), 100));
+        world.Add(new Sphere(new Point3(0, 0, -1), 0.5,new Material()));
+        world.Add(new Sphere(new Point3(0, -100.5, -1), 100, new Material()));
         Camera camera = new Camera();
 
         camera.AspectRatio = 16.0 / 9.0;

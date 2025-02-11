@@ -10,6 +10,7 @@ public class HitRecord
 {
     public Point3 P;
     public Vec3 Normal = new Vec3();
+    public Material Material = new Material();
     public double T;
     public bool FrontFace;
 
