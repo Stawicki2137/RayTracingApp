@@ -27,6 +27,12 @@ public class Dialectric : Material
     {
         _refractionIndex = refractionIndex;
     }
+    private double Reflectance(double cosine, double refractionIndex)
+    {
+        var fresnelCoefficient = (1.0 - refractionIndex) / (1.0 + refractionIndex);
+        fresnelCoefficient *= fresnelCoefficient;
+        return fresnelCoefficient + (1.0 - fresnelCoefficient) * Math.Pow((double)(1.0 - cosine), 5.0);
+    }
     public override bool Scatter(Ray rayIn, HitRecord record, ref Color attenuation, ref Ray scattered)
     {
         attenuation = new Color(1.0, 1.0, 1.0);
@@ -47,6 +53,7 @@ public class Dialectric : Material
     }
 
 }
+
 public class Metal : Material
 {
     private Color _albedo;
