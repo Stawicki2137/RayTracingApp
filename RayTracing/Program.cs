@@ -16,24 +16,22 @@ internal class Program
 
         HittableList world = new HittableList();
 
-        var materialGround = new Lambertian(new Color(0.8, 0.8, 0.0));
-        var materialCenter = new Lambertian(new Color(0.1, 0.2, 0.5));
-        var materialLeft = new Dialectric(1.50);
-        var materialBubble = new Dialectric(1.00 / 1.50);
-        var materialRight = new Metal(new Color(0.8, 0.6, 0.2), 1.0);
+        var R = Math.Cos(Math.PI / 4);
 
-        world.Add(new Sphere(new Point3(0.0, -100.5, -1.0), 100.0, materialGround));
-        world.Add(new Sphere(new Point3(0.0, 0.0, -1.2), 0.5, materialCenter));
-        world.Add(new Sphere(new Point3(-1.0, 0.0, -1.0), 0.5, materialLeft));
-        world.Add(new Sphere(new Point3(-1.0, 0.0, -1.0), 0.4, materialBubble));
-        world.Add(new Sphere(new Point3(1.0, 0.0, -1.0), 0.5, materialRight));
+        var materialLeft = new Lambertian(new Color(0, 0, 1));
+        var materialRight = new Lambertian(new Color(1, 0, 0));
 
-        ColorUtils.SetImageName = "HollowGlassSphere";
+        world.Add(new Sphere(new Point3(-R, 0, -1), R, materialLeft));
+        world.Add(new Sphere(new Point3(R, 0, -1), R, materialRight));
+
+        ColorUtils.SetImageName = "Wide-angleView";
+
         Camera camera = new Camera();
         camera.AspectRatio = 16.0 / 9.0;
         camera.ImageWidth = 1200;
         camera.SamplesPerPixel = 100;
         camera.MaxDepth = 50;
+        camera.VFov = 90;
         camera.Render(world);
 
     }

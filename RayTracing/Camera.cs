@@ -14,6 +14,7 @@ public class Camera
     public int ImageWidth = 100;
     public int SamplesPerPixel = 10;
     public int MaxDepth = 10; // Maximum number of ray bounces into scene
+    public double VFov = 90;
 
     private int _imageHeight;
     private Point3 _cameraCenter;
@@ -49,8 +50,11 @@ public class Camera
         _pixelSamplesScale = (double)1.0 / (double)SamplesPerPixel;
         _cameraCenter = new Point3(0, 0, 0);
         var focalLength = 1.0;
-        var viewportHeight = 2.0;
+        var theta = Rtfunc.DegreesToRadians(VFov);
+        var h = Math.Tan(theta / 2);
+        var viewportHeight = 2.0 * h * focalLength;
         var viewportWidth = viewportHeight * (double)(ImageWidth) / (double)_imageHeight;
+
         var viewportU = new Vec3(viewportWidth, 0, 0); //Horizontal
         var viewportV = new Vec3(0, -viewportHeight, 0); //Vertical
 
