@@ -50,6 +50,7 @@ public static class ColorUtils
 
         return 0;
     }
+    public static string SetImageName = "Image1";
     public static void SaveAsJpeg(JpegColor[] ppmImage, int width, int height)
     {
         ImSh.Image<ImSh::PixelFormats.Rgb24> image = new(width, height);
@@ -64,7 +65,7 @@ public static class ColorUtils
                 span[i * width + j].B = (byte)ppmImage[i * width + j].B;
             }
         }
-        string imageName = $"../../../ImagesJpeg/GlassSphereThatAlwaysRefracts.jpeg";
+        string imageName = $"../../../ImagesJpeg/" + SetImageName + ".jpeg";
         ImSh.Formats.Jpeg.JpegEncoder encoder = new();
         using FileStream fileStream = new FileStream(imageName, FileMode.OpenOrCreate, FileAccess.Write);
         encoder.Encode(image, fileStream);

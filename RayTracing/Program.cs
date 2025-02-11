@@ -18,7 +18,7 @@ internal class Program
 
         var materialGround = new Lambertian(new Color(0.8, 0.8, 0.0));
         var materialCenter = new Lambertian(new Color(0.1, 0.2, 0.5));
-        var materialLeft = new Dialectric(1.50);
+        var materialLeft = new Dialectric(1.00/1.33); // an air bubble in water
         var materialRight = new Metal(new Color(0.8, 0.6, 0.2), 1.0);
 
         world.Add(new Sphere(new Point3(0.0, -100.5, -1.0), 100.0, materialGround));
@@ -26,7 +26,7 @@ internal class Program
         world.Add(new Sphere(new Point3(-1.0, 0.0, -1.0), 0.5, materialLeft));
         world.Add(new Sphere(new Point3(1.0, 0.0, -1.0), 0.5, materialRight));
 
-
+        ColorUtils.SetImageName = "AirBubbleInWater";
         Camera camera = new Camera();
         camera.AspectRatio = 16.0 / 9.0;
         camera.ImageWidth = 1200;

@@ -33,9 +33,16 @@ public class Dialectric : Material
         double refractionIndex = record.FrontFace ? ((double)1.0 / _refractionIndex) : _refractionIndex;
 
         Vec3 unitDirection = Vec3.UnitVector(rayIn.Direction);
-        Vec3 refractedRay = Vec3.Refract(unitDirection, record.Normal, refractionIndex);
+        double cosTheta = Math.Min(Vec3.Dot(-unitDirection, record.Normal), 1.0);
+        double sinTheta = Math.Sqrt(1.0 - cosTheta * cosTheta);
+        bool cannotRefract = refractionIndex * sinTheta > 1.0;
+        Vec3 direction = new Vec3();
 
-        scattered = new Ray(record.P,refractedRay);
+        if (cannotRefract)
+            direction = Vec3.Reflect(unitDirection, record.Normal);
+        else
+            direction = Vec3.Refract(unitDirection, record.Normal, refractionIndex);
+        scattered = new Ray(record.P, direction);
         return true;
     }
 
