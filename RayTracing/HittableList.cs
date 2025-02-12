@@ -10,10 +10,15 @@ namespace RayTracing;
 public class HittableList : Hittable
 {
     public List<Hittable> Objects = new List<Hittable>();
+    private AxisAlignedBoundingBox _boundingBox = new AxisAlignedBoundingBox();
     public HittableList() { }
     public HittableList(Hittable obj) { Add(obj); }
     public void Clear() { Objects.Clear(); }
-    public void Add(Hittable obj) { Objects.Add(obj); }
+    public void Add(Hittable obj) 
+    {
+        Objects.Add(obj);
+        _boundingBox = new AxisAlignedBoundingBox(_boundingBox, obj.BoundingBox());
+    }
 
     public override bool Hit(ref Ray ray, Interval rayT, ref HitRecord hitRecord)
     {
@@ -32,5 +37,6 @@ public class HittableList : Hittable
         return hitAnything;
 
     }
+    public override AxisAlignedBoundingBox BoundingBox() => _boundingBox;
 }
 

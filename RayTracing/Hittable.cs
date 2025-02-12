@@ -24,4 +24,5 @@ public class HitRecord
 public abstract class Hittable
 {
     public abstract bool Hit(ref Ray ray, Interval rayT, ref HitRecord hitRecord);
+    public abstract AxisAlignedBoundingBox BoundingBox();
 }

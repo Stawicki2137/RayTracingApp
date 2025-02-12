@@ -20,7 +20,6 @@ public struct Interval
         Min = min;
         Max = max;
     }
-
     public bool Contains(double x)
     {
         return Min <= x && x <= Max;
@@ -36,5 +35,15 @@ public struct Interval
         if (x < Min) return Min;
         if (x > Max) return Max;
         return x;
+    }
+    public Interval Expand(double delta)
+    {
+        var padding = delta / 2.0;
+        return new Interval(Min - padding, Max + padding);
+    }
+    public Interval(Interval a, Interval b)
+    {
+        Min = a.Min <= b.Min ? a.Min : b.Min;
+        Max = a.Max >= b.Max ? a.Max : b.Max;
     }
 }
