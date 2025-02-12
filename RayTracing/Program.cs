@@ -30,13 +30,14 @@ internal class Program
                 {
                     Material sphereMaterial = new Material();
 
-                    if (chooseMat < 0.67)
+                    if (chooseMat < 0.8)
                     {
                         var albedo = Vec3.Random() * Vec3.Random();
                         sphereMaterial = new Lambertian(albedo);
-                        world.Add(new Sphere(center, 0.2, sphereMaterial));
+                        var center2 = center + new Vec3(0, Rtfunc.RandomDouble(0, 0.5), 0);
+                        world.Add(new Sphere(center,center2, 0.2, sphereMaterial));
                     }
-                    else if (chooseMat < 0.87)
+                    else if (chooseMat < 0.95)
                     {
                         var albedo = Vec3.Random(0.5, 1);
                         var fuzz = Rtfunc.RandomDouble(0, 0.5);
@@ -60,12 +61,12 @@ internal class Program
        
 
 
-        ColorUtils.SetImageName = "FinalScene6";
+        ColorUtils.SetImageName = "BouncingSpheres";
 
         Camera camera = new Camera();
         camera.AspectRatio = 16.0 / 9.0;
-        camera.ImageWidth = 1200;
-        camera.SamplesPerPixel = 30;
+        camera.ImageWidth = 800;
+        camera.SamplesPerPixel = 50;
         camera.MaxDepth = 30;
 
         camera.VFov = 20;

@@ -86,7 +86,8 @@ public class Camera
 
         var rayOrigin = (DefocusAngle <= 0) ? _cameraCenter : DefocusDiskSample();
         var rayDirection = pixelSample - rayOrigin;
-        return new Ray(rayOrigin, rayDirection);
+        var rayTime = Rtfunc.RandomDouble();
+        return new Ray(rayOrigin, rayDirection,rayTime);
     }
     private Point3 DefocusDiskSample()
     {

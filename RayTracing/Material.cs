@@ -48,7 +48,7 @@ public class Dialectric : Material
             direction = Vec3.Reflect(unitDirection, record.Normal);
         else
             direction = Vec3.Refract(unitDirection, record.Normal, refractionIndex);
-        scattered = new Ray(record.P, direction);
+        scattered = new Ray(record.P, direction, rayIn.Time);
         return true;
     }
 
@@ -67,7 +67,7 @@ public class Metal : Material
     {
         Vec3 reflected = Vec3.Reflect(rayIn.Direction, record.Normal);
         reflected = Vec3.UnitVector(reflected) + (_fuzziness * Vec3.RandomUnitVector());
-        scattered = new Ray(record.P, reflected);
+        scattered = new Ray(record.P, reflected,rayIn.Time);
         attenuation = _albedo;
         return (Vec3.Dot(scattered.Direction, record.Normal) > 0);
     }
@@ -85,7 +85,7 @@ public class Lambertian : Material
         var scatterDirection = record.Normal + Vec3.RandomUnitVector();
         if (scatterDirection.NearZero())
             scatterDirection = record.Normal;
-        scattered = new Ray(record.P, scatterDirection);
+        scattered = new Ray(record.P, scatterDirection,rayIn.Time);
         attenuation = _albedo;
         return true;
     }
