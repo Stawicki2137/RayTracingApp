@@ -35,6 +35,13 @@ public class AxisAlignedBoundingBox
         if (n == 2) return Z;
         return X;
     }
+    public int LongestAxis()
+    {
+        if (X.Size() > Y.Size())
+            return X.Size() > Z.Size() ? 0 : 2;
+        else
+            return Y.Size() > Z.Size() ? 1 : 2;
+    }
     public bool Hit(Ray ray, Interval rayT)
     {
         Point3 rayOrigin = ray.Origin;
@@ -63,5 +70,7 @@ public class AxisAlignedBoundingBox
         }
         return true;
     }
+    public static readonly AxisAlignedBoundingBox Empty = new AxisAlignedBoundingBox(Interval.Empty, Interval.Empty, Interval.Empty);
+    public static readonly AxisAlignedBoundingBox Universe = new AxisAlignedBoundingBox(Interval.Universe, Interval.Universe, Interval.Universe);
 }
 

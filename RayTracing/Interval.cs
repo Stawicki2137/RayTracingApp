@@ -9,6 +9,9 @@ namespace RayTracing;
 public struct Interval
 {
     public double Min, Max;
+    public static readonly Interval Empty = new Interval(double.PositiveInfinity, double.NegativeInfinity);
+    public static readonly Interval Universe= new Interval();
+
 
     public Interval()
     {
@@ -36,6 +39,7 @@ public struct Interval
         if (x > Max) return Max;
         return x;
     }
+    public double Size() => Max - Min;
     public Interval Expand(double delta)
     {
         var padding = delta / 2.0;

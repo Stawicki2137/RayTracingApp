@@ -17,9 +17,13 @@ public class BoundingVolumeHierarchyNode : Hittable
 
     public BoundingVolumeHierarchyNode(List<Hittable> obj, int start, int end)
     {
-        int axis = Rtfunc.RandomInt(0, 2);
+        _boundingBox = AxisAlignedBoundingBox.Empty;
+        for (int objIndex = start; objIndex < end; objIndex++)
+        {
+            _boundingBox = new AxisAlignedBoundingBox(_boundingBox, obj[objIndex].BoundingBox());
+        }
+        int axis = _boundingBox.LongestAxis();
         Comparison<Hittable> comparator;
-
         if (axis == 0)
             comparator = BoxXCompare;
         else if (axis == 1)
@@ -44,7 +48,6 @@ public class BoundingVolumeHierarchyNode : Hittable
             _left = new BoundingVolumeHierarchyNode(obj, start, mid);
             _right = new BoundingVolumeHierarchyNode(obj, mid, end);
         }
-        _boundingBox = new AxisAlignedBoundingBox(_left.BoundingBox(), _right.BoundingBox());
     }
     private static int BoxCompare(Hittable a, Hittable b, int axisIndex)
     {

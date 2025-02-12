@@ -10,7 +10,6 @@ namespace RayTracing;
 internal class Program
 {
 
-
     static void Main(string[] args)
     {
 
@@ -35,7 +34,7 @@ internal class Program
                         var albedo = Vec3.Random() * Vec3.Random();
                         sphereMaterial = new Lambertian(albedo);
                         var center2 = center + new Vec3(0, Rtfunc.RandomDouble(0, 0.5), 0);
-                        world.Add(new Sphere(center,center2, 0.2, sphereMaterial));
+                        world.Add(new Sphere(center, center2, 0.2, sphereMaterial));
                     }
                     else if (chooseMat < 0.95)
                     {
@@ -59,14 +58,14 @@ internal class Program
         var metal1 = new Metal(new Color(0.7, 0.6, 0.5), 0.0);
         world.Add(new Sphere(new Point3(4, 1, 0), 1.0, metal1));
         world = new HittableList(new BoundingVolumeHierarchyNode(world));
-       
 
 
-        ColorUtils.SetImageName = "Image1";
+
+        ColorUtils.SetImageName = "BouncingSpheres2";
 
         Camera camera = new Camera();
         camera.AspectRatio = 16.0 / 9.0;
-        camera.ImageWidth = 1400;
+        camera.ImageWidth = 800;
         camera.SamplesPerPixel = 50;
         camera.MaxDepth = 30;
 
