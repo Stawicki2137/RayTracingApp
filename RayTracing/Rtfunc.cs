@@ -16,5 +16,9 @@ public static class Rtfunc
     {
         return min + (max - min) * Random.Shared.NextDouble();
     }
+    public static int RandomInt(int min, int max)
+    {
+        return (int)RandomDouble(min, max + 1);
+    }
 
 }

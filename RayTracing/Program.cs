@@ -58,14 +58,15 @@ internal class Program
         world.Add(new Sphere(new Point3(-4, 1, 0), 1.0, lambertian1));
         var metal1 = new Metal(new Color(0.7, 0.6, 0.5), 0.0);
         world.Add(new Sphere(new Point3(4, 1, 0), 1.0, metal1));
+        world = new HittableList(new BoundingVolumeHierarchyNode(world));
        
 
 
-        ColorUtils.SetImageName = "BouncingSpheres";
+        ColorUtils.SetImageName = "Image1";
 
         Camera camera = new Camera();
         camera.AspectRatio = 16.0 / 9.0;
-        camera.ImageWidth = 800;
+        camera.ImageWidth = 1400;
         camera.SamplesPerPixel = 50;
         camera.MaxDepth = 30;
 
