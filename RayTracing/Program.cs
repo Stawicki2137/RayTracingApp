@@ -21,7 +21,7 @@ internal class Program
 
         for (int a = -9; a < 9; a++)
         {
-            for (int b = -8; b < 8; b++)
+            for (int b = -9; b < 9; b++)
             {
                 var chooseMat = Rtfunc.RandomDouble();
                 Point3 center = new Point3(1.15 * a + 0.9 * Rtfunc.RandomDouble(), 0.2, 1.15 * b + 0.9 * Rtfunc.RandomDouble());
@@ -30,13 +30,13 @@ internal class Program
                 {
                     Material sphereMaterial = new Material();
 
-                    if (chooseMat < 0.8)
+                    if (chooseMat < 0.67)
                     {
                         var albedo = Vec3.Random() * Vec3.Random();
                         sphereMaterial = new Lambertian(albedo);
                         world.Add(new Sphere(center, 0.2, sphereMaterial));
                     }
-                    else if (chooseMat < 0.95)
+                    else if (chooseMat < 0.87)
                     {
                         var albedo = Vec3.Random(0.5, 1);
                         var fuzz = Rtfunc.RandomDouble(0, 0.5);
@@ -51,18 +51,21 @@ internal class Program
                 }
             }
         }
-        var material1 = new Dialectric(1.5);
-        world.Add(new Sphere(new Point3(0, 1, 0), 1.0, material1));
-        var material2 = new Lambertian(new Color(0.4, 0.2, 0.1));
-        world.Add(new Sphere(new Point3(-4, 1, 0), 1.0, material2));
-        var material3 = new Metal(new Color(0.7, 0.6, 0.5), 0.0);
-        world.Add(new Sphere(new Point3(4, 1, 0), 1.0, material3));
-        ColorUtils.SetImageName = "FinalScene4";
+        var dialectric1 = new Dialectric(1.5);
+        world.Add(new Sphere(new Point3(0, 1, 0), 1.0, dialectric1));
+        var lambertian1 = new Lambertian(new Color(0.4, 0.2, 0.1));
+        world.Add(new Sphere(new Point3(-4, 1, 0), 1.0, lambertian1));
+        var metal1 = new Metal(new Color(0.7, 0.6, 0.5), 0.0);
+        world.Add(new Sphere(new Point3(4, 1, 0), 1.0, metal1));
+       
+
+
+        ColorUtils.SetImageName = "FinalScene6";
 
         Camera camera = new Camera();
         camera.AspectRatio = 16.0 / 9.0;
         camera.ImageWidth = 1200;
-        camera.SamplesPerPixel = 20;
+        camera.SamplesPerPixel = 30;
         camera.MaxDepth = 30;
 
         camera.VFov = 20;
@@ -79,16 +82,3 @@ internal class Program
     }
 }
 
-/*
- single-core render
- FinalScene 170,4 s, 600 width 
- FinalScene2 311,819 s, 800 width 
- FinalScene3 878,04 s, 1000 width 
-
- Parallel.For for rendering optimization
- FinalScene4 1519.163 s, 1200 width
- FinalScene3 401.666 s, 1000 width
- FinalScene2 231,752 s, 800 width
- ----------- 130,443 s, 600 width
-
- */

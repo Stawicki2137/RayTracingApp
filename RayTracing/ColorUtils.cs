@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ImSh = SixLabors.ImageSharp;
 using Color = RayTracing.Vec3;
 using System.Security.Cryptography;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace RayTracing;
 
@@ -54,17 +55,23 @@ public static class ColorUtils
     public static void SaveAsJpeg(JpegColor[] ppmImage, int width, int height)
     {
         ImSh.Image<ImSh::PixelFormats.Rgb24> image = new(width, height);
-        image.DangerousTryGetSinglePixelMemory(out Memory<ImSh::PixelFormats.Rgb24> memory);
-        var span = memory.Span;
-        for (int i = 0; i < height; i++)
+        //image.DangerousTryGetSinglePixelMemory(out Memory<ImSh::PixelFormats.Rgb24> memory);
+        //var span = memory.Span;
+        image.ProcessPixelRows(accessor =>
         {
-            for (int j = 0; j < width; j++)
+            for (int y = 0; y < height; y++)
             {
-                span[i * width + j].R = (byte)ppmImage[i * width + j].R;
-                span[i * width + j].G = (byte)ppmImage[i * width + j].G;
-                span[i * width + j].B = (byte)ppmImage[i * width + j].B;
+                Span<Rgb24> pixelRowSpan = accessor.GetRowSpan(y);
+                for (int x = 0; x < width; x++)
+                {
+                    int index = y * width + x;
+                    pixelRowSpan[x] = new Rgb24(
+                        ppmImage[index].R,
+                        ppmImage[index].G,
+                        ppmImage[index].B);
+                }
             }
-        }
+        });
         string imageName = $"../../../ImagesJpeg/" + SetImageName + ".jpeg";
         ImSh.Formats.Jpeg.JpegEncoder encoder = new();
         using FileStream fileStream = new FileStream(imageName, FileMode.OpenOrCreate, FileAccess.Write);
