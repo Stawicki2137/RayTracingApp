@@ -15,8 +15,8 @@ internal class Program
 
         HittableList world = new HittableList();
 
-        var groundMaterial = new Lambertian(new Color(0.5, 0.5, 0.5));
-        world.Add(new Sphere(new Point3(0, -1000, 0), 1000, groundMaterial));
+        var checkerGroundMaterial = new Checker(0.32, new Color(0.2, 0.3, 0.1), new Color(0.9, 0.9, 0.9));
+        world.Add(new Sphere(new Point3(0, -1000, 0), 1000, new Lambertian(checkerGroundMaterial)));
 
         for (int a = -9; a < 9; a++)
         {
@@ -33,7 +33,7 @@ internal class Program
                     {
                         var albedo = Vec3.Random() * Vec3.Random();
                         sphereMaterial = new Lambertian(albedo);
-                        var center2 = center + new Vec3(0, Rtfunc.RandomDouble(0, 0.5), 0);
+                        var center2 = center + new Vec3(0, Rtfunc.RandomDouble(0, 0.35), 0);
                         world.Add(new Sphere(center, center2, 0.2, sphereMaterial));
                     }
                     else if (chooseMat < 0.95)
@@ -61,11 +61,11 @@ internal class Program
 
 
 
-        ColorUtils.SetImageName = "BouncingSpheres2";
+        ColorUtils.SetImageName = "BouncingSpheresOnTheCheckerGround2";
 
         Camera camera = new Camera();
         camera.AspectRatio = 16.0 / 9.0;
-        camera.ImageWidth = 800;
+        camera.ImageWidth = 1400;
         camera.SamplesPerPixel = 50;
         camera.MaxDepth = 30;
 

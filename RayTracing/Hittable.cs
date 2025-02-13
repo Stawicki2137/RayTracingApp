@@ -13,6 +13,7 @@ public class HitRecord
     public Material Material = new Material();
     public double T;
     public bool FrontFace;
+    public double U, V;
 
     public void SetFaceNormal(Ray ray, Vec3 outwardNormal)
     {

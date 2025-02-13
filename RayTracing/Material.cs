@@ -67,7 +67,7 @@ public class Metal : Material
     {
         Vec3 reflected = Vec3.Reflect(rayIn.Direction, record.Normal);
         reflected = Vec3.UnitVector(reflected) + (_fuzziness * Vec3.RandomUnitVector());
-        scattered = new Ray(record.P, reflected,rayIn.Time);
+        scattered = new Ray(record.P, reflected, rayIn.Time);
         attenuation = _albedo;
         return (Vec3.Dot(scattered.Direction, record.Normal) > 0);
     }
@@ -75,18 +75,23 @@ public class Metal : Material
 
 public class Lambertian : Material
 {
-    private Color _albedo;
+    private Texture _texture;
     public Lambertian(Color albedo)
     {
-        _albedo = albedo;
+        _texture = new SolidColor(albedo);
     }
+    public Lambertian(Texture texture)
+    {
+        _texture = texture;
+    }
+
     public override bool Scatter(Ray rayIn, HitRecord record, ref Color attenuation, ref Ray scattered)
     {
         var scatterDirection = record.Normal + Vec3.RandomUnitVector();
         if (scatterDirection.NearZero())
             scatterDirection = record.Normal;
-        scattered = new Ray(record.P, scatterDirection,rayIn.Time);
-        attenuation = _albedo;
+        scattered = new Ray(record.P, scatterDirection, rayIn.Time);
+        attenuation = _texture.Value(record.U, record.V, record.P);
         return true;
     }
 }
