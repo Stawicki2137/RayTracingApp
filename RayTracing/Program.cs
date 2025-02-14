@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Numerics;
+using System.Xml.Serialization;
 using Color = RayTracing.Vec3;
 using Point3 = RayTracing.Vec3;
 
@@ -9,13 +10,11 @@ namespace RayTracing;
 
 internal class Program
 {
-
-    static void Main(string[] args)
+    public static void BouncingSpheresOnCheckerGround()
     {
-
         HittableList world = new HittableList();
 
-        var checkerGroundMaterial = new Checker(0.32, new Color(0.2, 0.3, 0.1), new Color(0.9, 0.9, 0.9));
+        var checkerGroundMaterial = new Checker(0.32, new Color(0.0, 0.0, 0.8), new Color(0.9, 0.9, 0.9));
         world.Add(new Sphere(new Point3(0, -1000, 0), 1000, new Lambertian(checkerGroundMaterial)));
 
         for (int a = -9; a < 9; a++)
@@ -29,14 +28,14 @@ internal class Program
                 {
                     Material sphereMaterial = new Material();
 
-                    if (chooseMat < 0.8)
+                    if (chooseMat < 0.76)
                     {
                         var albedo = Vec3.Random() * Vec3.Random();
                         sphereMaterial = new Lambertian(albedo);
                         var center2 = center + new Vec3(0, Rtfunc.RandomDouble(0, 0.35), 0);
                         world.Add(new Sphere(center, center2, 0.2, sphereMaterial));
                     }
-                    else if (chooseMat < 0.95)
+                    else if (chooseMat < 0.91)
                     {
                         var albedo = Vec3.Random(0.5, 1);
                         var fuzz = Rtfunc.RandomDouble(0, 0.5);
@@ -61,11 +60,11 @@ internal class Program
 
 
 
-        ColorUtils.SetImageName = "BouncingSpheresOnTheCheckerGround2";
+        ColorUtils.SetImageName = "BouncingSpheresOnTheCheckerGround6";
 
         Camera camera = new Camera();
         camera.AspectRatio = 16.0 / 9.0;
-        camera.ImageWidth = 1400;
+        camera.ImageWidth = 800;
         camera.SamplesPerPixel = 50;
         camera.MaxDepth = 30;
 
@@ -80,6 +79,12 @@ internal class Program
         camera.Render(world);
         sw.Stop();
         Console.WriteLine($"Rendering completed in {sw.ElapsedMilliseconds * 1e-3,2} s");
+
+    }
+
+    static void Main(string[] args)
+    {
+        BouncingSpheresOnCheckerGround();  
     }
 }
 
