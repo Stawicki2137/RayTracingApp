@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Diagnostics.Tracing;
 using System.Numerics;
 using System.Xml.Serialization;
 using Color = RayTracing.Vec3;
@@ -78,13 +79,45 @@ internal class Program
         Stopwatch sw = Stopwatch.StartNew();
         camera.Render(world);
         sw.Stop();
-        Console.WriteLine($"Rendering completed in {sw.ElapsedMilliseconds * 1e-3,2} s");
+        Console.WriteLine($"Rendering completed in {sw.ElapsedMilliseconds * 1e-3:F2} s");
 
     }
+    public static void CheckerSpheres()
+    {
+        HittableList world = new HittableList();
+        var checker = new Checker(0.32, new Color(0.2, 0.3, 0.1), new Color(0.9, 0.9, 0.9));
+        world.Add(new Sphere(new Point3(0, -10, 0), 10, new Lambertian(checker)));
+        world.Add(new Sphere(new Point3(0, 10, 0), 10, new Lambertian(checker)));
 
+        Camera camera = new Camera();
+        camera.AspectRatio = 16.0 / 9.0;
+        camera.ImageWidth = 800;
+        camera.SamplesPerPixel = 100;
+        camera.MaxDepth = 50;
+        ColorUtils.SetImageName = "CheckeredSpheres";
+        camera.VFov = 20;
+        camera.LookFrom = new Point3(13, 2, 3);
+        camera.LookAt = new Point3(0, 0, 0);
+        camera.Vup = new Vec3(0, 1, 0);
+        camera.DefocusAngle = 0;
+        Stopwatch sw = Stopwatch.StartNew();
+        camera.Render(world);
+        sw.Stop();
+        Console.WriteLine($"Rendering completed in {sw.ElapsedMilliseconds * 1e-3:F2} s");
+
+    }
     static void Main(string[] args)
     {
-        BouncingSpheresOnCheckerGround();  
+        int scene = 2;
+        switch(scene)
+        {
+            case 1:
+                BouncingSpheresOnCheckerGround(); 
+                break;
+            case 2:
+                CheckerSpheres();
+                break;
+        }
     }
 }
 
